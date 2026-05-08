@@ -1,4 +1,4 @@
-import { renderSidebar, renderContent, bindFacetChange } from './rendering.js'
+import { renderSidebar, renderContent, bindFacetChange, bindClearFilters } from './rendering.js'
 
 
 export async function executeSearch(searchQuery, filters) {
@@ -28,5 +28,8 @@ export async function executeSearch(searchQuery, filters) {
     renderContent(items)
     bindFacetChange(newFilters => {
         executeSearch(searchQuery, newFilters)
+    })
+    bindClearFilters(() => {
+        executeSearch(searchQuery, {})
     })
 }

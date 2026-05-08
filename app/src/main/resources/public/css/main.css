@@ -105,6 +105,16 @@ body {
     cursor: pointer;
 }
 
+.clear-filters {
+    margin: 0 1rem 2rem;
+    padding: 10px;
+    width: calc(100% - 2rem);
+    max-width: 282px;
+    border: 1px solid grey;
+    background: #f1f1f1;
+    cursor: pointer;
+}
+
 .loader {
     display: none;
     position: fixed;
