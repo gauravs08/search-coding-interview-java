@@ -29,46 +29,46 @@ public class SearchServiceTest {
     @Test
     public void testEmptySearch() {
         assertIterableEquals(
-                searchService.search(entries, "").items(),
-                entries
+                entries,
+                searchService.search(entries, "").items()
         );
     }
 
     @Test
     public void testSearchByGeneralKeyword() {
         assertIterableEquals(
-                searchService.search(entries, "best").items(),
-                entries
+                entries,
+                searchService.search(entries, "best").items()
         );
     }
 
     @Test
     public void testSearchByExactKeyword() {
         assertIterableEquals(
-                searchService.search(entries, "doors").items(),
-                List.of(entry2)
+                List.of(entry2),
+                searchService.search(entries, "doors").items()
         );
     }
 
     @Test
     public void testPriceFacetGeneration() {
         assertIterableEquals(
-                searchService.search(entries, "best").facets().get("price"),
                 List.of(
                         new Facet("5 - 10", 1),
                         new Facet("15 - 20", 1)
-                )
+                ),
+                searchService.search(entries, "best").facets().get("price")
         );
     }
 
     @Test
     public void testYearFacetGeneration() {
         assertIterableEquals(
-                searchService.search(entries, "best").facets().get("year"),
                 List.of(
                         new Facet("2008", 1),
                         new Facet("2002", 1)
-                )
+                ),
+                searchService.search(entries, "best").facets().get("year")
         );
     }
 
@@ -77,17 +77,17 @@ public class SearchServiceTest {
         var result = searchService.search(entries, "doors");
 
         assertIterableEquals(
-                result.facets().get("price"),
                 List.of(
                         new Facet("15 - 20", 1)
-                )
+                ),
+                result.facets().get("price")
         );
 
         assertIterableEquals(
-                result.facets().get("year"),
                 List.of(
                         new Facet("2008", 1)
-                )
+                ),
+                result.facets().get("year")
         );
     }
 
@@ -95,23 +95,23 @@ public class SearchServiceTest {
     public void testFilterMultipleFacetValues() {
         var result = searchService.search(entries, "best", List.of("2002", "2008"), List.of());
         assertIterableEquals(
-                result.items(),
-                entries
+                entries,
+                result.items()
         );
 
         assertIterableEquals(
-                result.facets().get("year"),
                 List.of(
                         new Facet("2008", 1),
                         new Facet("2002", 1)
-                )
+                ),
+                result.facets().get("year")
         );
         assertIterableEquals(
-                result.facets().get("price"),
                 List.of(
                         new Facet("5 - 10", 1),
                         new Facet("15 - 20", 1)
-                )
+                ),
+                result.facets().get("price")
         );
     }
 
@@ -120,23 +120,21 @@ public class SearchServiceTest {
         var result = searchService.search(entries, "best", List.of("2002"), List.of("5 - 10"));
 
         assertIterableEquals(
-                result.items(),
-                List.of(entry1)
+                List.of(entry1),
+                result.items()
         );
 
         assertIterableEquals(
-                result.facets().get("year"),
                 List.of(
-                        new Facet("2008", 1),
                         new Facet("2002", 1)
-                )
+                ),
+                result.facets().get("year")
         );
         assertIterableEquals(
-                result.facets().get("price"),
                 List.of(
-                        new Facet("5 - 10", 1),
-                        new Facet("15 - 20", 1)
-                )
+                        new Facet("5 - 10", 1)
+                ),
+                result.facets().get("price")
         );
     }
 
@@ -145,24 +143,23 @@ public class SearchServiceTest {
         var result = searchService.search(entries, "best", List.of("2002", "2008"), List.of("15 - 20"));
 
         assertIterableEquals(
-                result.items(),
-                List.of(entry2)
+                List.of(entry2),
+                result.items()
         );
 
         assertIterableEquals(
-                result.facets().get("year"),
                 List.of(
-                        new Facet("2008", 1),
-                        new Facet("2002", 0)
-                )
+                        new Facet("2008", 1)
+                ),
+                result.facets().get("year")
         );
 
         assertIterableEquals(
-                result.facets().get("price"),
                 List.of(
                         new Facet("5 - 10", 1),
                         new Facet("15 - 20", 1)
-                )
+                ),
+                result.facets().get("price")
         );
     }
 }
