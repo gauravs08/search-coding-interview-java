@@ -2,6 +2,7 @@ import { escapeHtml } from './helpers.js'
 
 export function renderSidebar(facets, filters) {
     const sidebar = document.getElementById('sidebar')
+    const hasFilters = Object.values(filters).some(values => values.length > 0)
 
     const generateHTML = (field) => `<div class="facet">
         <div class="facet-header">
@@ -23,6 +24,7 @@ export function renderSidebar(facets, filters) {
     sidebar.innerHTML = `
         ${generateHTML('price')}
         ${generateHTML('year')}
+        ${hasFilters ? '<button type="button" id="clear-filters" class="clear-filters">Clear filters</button>' : ''}
     `
 }
 
@@ -71,4 +73,8 @@ export function bindFacetChange(onChange) {
             onChange(values)
         })
     })
+}
+
+export function bindClearFilters(onClear) {
+    document.getElementById('clear-filters')?.addEventListener('click', onClear)
 }
