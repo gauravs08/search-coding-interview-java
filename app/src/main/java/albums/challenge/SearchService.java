@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,8 +31,8 @@ public class SearchService {
         return new Results(
                 filteredEntries,
                 Map.ofEntries(
-                        Map.entry("year", yearFacets(matchingEntries)),
-                        Map.entry("price", priceFacets(matchingEntries))
+                        Map.entry("year", yearFacets(matchingEntries, price)),
+                        Map.entry("price", priceFacets(matchingEntries, year))
                 ),
                 query
         );
@@ -49,24 +50,40 @@ public class SearchService {
         }).toList();
     }
 
-    private List<Facet> yearFacets(List<Entry> entries) {
-        return entries.stream()
-                .collect(Collectors.groupingBy(this::releaseYear, Collectors.counting()))
-                .entrySet()
-                .stream()
-                .map(entry -> new Facet(entry.getKey(), entry.getValue().intValue()))
+    private List<Facet> yearFacets(List<Entry> entries, List<String> selectedPrices) {
+        var entriesMatchingOtherFilters = entries.stream()
+                .filter(matchesAnyPrice(selectedPrices))
+                .toList();
+        var counts = countBy(entriesMatchingOtherFilters, this::releaseYear);
+
+        return entriesMatchingOtherFilters.stream()
+                .map(this::releaseYear)
+                .distinct()
+                .map(year -> new Facet(year, counts.get(year).intValue()))
                 .sorted(Comparator.comparing(Facet::value).reversed())
                 .toList();
     }
 
-    private List<Facet> priceFacets(List<Entry> entries) {
-        return entries.stream()
-                .collect(Collectors.groupingBy(this::priceRange, Collectors.counting()))
-                .entrySet()
-                .stream()
-                .map(entry -> new Facet(entry.getKey(), entry.getValue().intValue()))
+    private List<Facet> priceFacets(List<Entry> entries, List<String> selectedYears) {
+        var entriesMatchingOtherFilters = entries.stream()
+                .filter(matchesAnyYear(selectedYears))
+                .toList();
+        var counts = countBy(entriesMatchingOtherFilters, this::priceRange);
+
+        return entriesMatchingOtherFilters.stream()
+                .map(this::priceRange)
+                .distinct()
+                .map(price -> new Facet(price, counts.get(price).intValue()))
                 .sorted(Comparator.comparingInt(facet -> priceRangeStart(facet.value())))
                 .toList();
+    }
+
+    private Map<String, Long> countBy(
+            List<Entry> entries,
+            Function<Entry, String> facetValue
+    ) {
+        return entries.stream()
+                .collect(Collectors.groupingBy(facetValue, Collectors.counting()));
     }
 
     private String releaseYear(Entry entry) {
