@@ -1,5 +1,11 @@
 # Albums Challenge
 
+![Java](https://img.shields.io/badge/Java-21-blue)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.0.6-brightgreen)
+![Gradle](https://img.shields.io/badge/Gradle-9.4.0-02303A)
+![Tests](https://img.shields.io/badge/Tests-JUnit%206-blue)
+![Coverage](https://img.shields.io/badge/Coverage-JaCoCo-orange)
+
 Your challenge is to finish this web app which lists the top 100 music albums from iTunes with search and filter
 functionality.
 
