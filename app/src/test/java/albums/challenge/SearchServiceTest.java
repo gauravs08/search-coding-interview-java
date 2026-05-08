@@ -127,13 +127,15 @@ public class SearchServiceTest {
         assertIterableEquals(
                 result.facets().get("year"),
                 List.of(
+                        new Facet("2008", 1),
                         new Facet("2002", 1)
                 )
         );
         assertIterableEquals(
                 result.facets().get("price"),
                 List.of(
-                        new Facet("5 - 10", 1)
+                        new Facet("5 - 10", 1),
+                        new Facet("15 - 20", 1)
                 )
         );
     }
