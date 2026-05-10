@@ -90,3 +90,13 @@ executing them in IntelliJ.
   and 5 and were released in 2017, you shouldn't show year 2017 as a filtering option. But 2017 should appear as
   a filter option when the user selects the `5-10` price range (or has no price selected) because there are some albums
   that were released in 2017 and cost 9.99.
+
+### 4. Miscellaneous UI improvements.
+
+This task was added in the implementation branch to improve the user experience of the finished app.
+
+- Add a clear filters action under the facets.
+- Show the clear filters action only when at least one filter is active.
+- Clear all selected year and price filters while keeping the current search query.
+- Keep the filter sidebar aligned with the active query and the selected filters.
+- Add Javadocs for the service-layer search and data-fetch logic so the request flow is documented in code.
