@@ -20,6 +20,13 @@ public class DataService {
     Logger logger = LogManager.getLogger(DataService.class);
     String uri = "https://itunes.apple.com/us/rss/topalbums/limit=200/json";
 
+    /**
+     * Fetches the album feed once and converts it into internal entries.
+     *
+     * <p>The result is cached so the application does not hit the remote feed on every search request.</p>
+     *
+     * @return the current album list
+     */
     @Cacheable("entry")
     public List<Entry> fetch() {
         logger.info("Fetching data");
