@@ -26,6 +26,33 @@ functionality.
 
 * You can also run the app from IntelliJ by running `Application` class.
 
+## API
+
+### `GET /api/search`
+
+This endpoint returns the albums that match the current search query together with the facet sidebar data used by the UI.
+
+Request parameters:
+
+* `query` - search text entered by the user
+* `year` - selected release years, repeated as needed
+* `price` - selected price ranges, repeated as needed
+
+Behavior:
+
+* The search query is applied first.
+* Year values are combined with `OR`.
+* Price values are combined with `OR`.
+* Year and price filters are combined with `AND`.
+* Facets are generated from the current search result so the sidebar stays aligned with the current query.
+* The UI `Clear filters` action resets `year` and `price` selections for the active query.
+
+Response:
+
+* `items` - matching album entries
+* `facets` - available price and year facet options with counts
+* `query` - the original search text
+
 
 ## Your Tasks
 
